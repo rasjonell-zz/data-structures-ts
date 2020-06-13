@@ -6,7 +6,10 @@
   "private": true,
   "scripts": {
     "build": "tsc -p .",
-    "postbuild": "ef-tspm > /dev/null"
+    "postbuild": "ef-tspm > /dev/null",
+
+    "prestart": "npm run build",
+    "start": "node dist/entry.js"
   },
   "devDependencies": {
     "@ef-carbon/tspm": "^2.2.5",
