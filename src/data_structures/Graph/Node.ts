@@ -20,7 +20,7 @@ export default class GraphNode<T> {
   ): number {
     const defaultPredicate: AdjacentPredicate<T> = (
       currentNode: GraphNode<T>
-    ): boolean => node === currentNode;
+    ): boolean => node.id === currentNode.id;
 
     const predicateFunction: AdjacentPredicate<T> =
       predicate || defaultPredicate;
@@ -40,9 +40,12 @@ export default class GraphNode<T> {
     node: GraphNode<T>,
     predicate?: AdjacentPredicate<T>
   ): GraphNode<T> {
-    const index = this.findNodeIndex(node, predicate);
+    try {
+      const index = this.findNodeIndex(node, predicate);
 
-    this.adjacents.splice(index, 1);
+      this.adjacents.splice(index, 1);
+    } catch {}
+
     return node;
   }
 

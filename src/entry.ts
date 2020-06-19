@@ -42,11 +42,11 @@ graph.addEdge(v3, v4);
 
 // graph.traversalBreadthFirst(v1, logger); // v1, v2, v3, v4
 
-// graph.traversalDepthFirst(v1, (node) => {
-//   console.log(node.id, node.value);
-// }); //v1, v3, v4, v2
+graph.traversalDepthFirst(v1, (node) => {
+  console.log(node.id, node.value);
+}); //v1, v3, v4, v2
 
-// console.log(Stack.evaluatePostFix("231*+9-"));
+console.log(Stack.evaluatePostFix("231*+9-"));
 
 let unsortedStack = new Stack<number>();
 unsortedStack.push(3);

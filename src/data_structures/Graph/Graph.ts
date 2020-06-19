@@ -45,10 +45,7 @@ class Graph<T extends object> {
     if (!nodeToBeDeleted) throw NotFoundError;
 
     for (const node of this.nodes.values()) {
-      node.removeAdjacent(
-        nodeToBeDeleted,
-        (currentNode: VertexNode<T>): boolean => currentNode.id === id
-      );
+      node.removeAdjacent(nodeToBeDeleted);
     }
 
     this.nodes.delete(id);
@@ -80,16 +77,14 @@ class Graph<T extends object> {
 
   removeEdge(source: VertexNode<T>, destination: VertexNode<T>): void {
     const edgeId = `${source.id}->${destination.id}`;
-    const predicate = (id: UniqueId) => (node: VertexNode<T>): boolean =>
-      node.id === id;
 
-    source.removeAdjacent(destination, predicate(destination.id));
+    source.removeAdjacent(destination);
     this.edges.delete(edgeId);
 
     if (this.edgeDirection === Graph.UNDIRECTED) {
       const reverseEdgeId = `${destination.id}->${source.id}`;
 
-      destination.removeAdjacent(source, predicate(source.id));
+      destination.removeAdjacent(source);
       this.edges.delete(reverseEdgeId);
     }
   }
