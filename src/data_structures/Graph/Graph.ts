@@ -1,5 +1,8 @@
 import Queue from "data_structures/Queue";
-import Stack from "data_structures/Stack"; import ID, { UniqueId } from "utils/GenerateUniqueId";
+import Stack from "data_structures/Stack";
+
+import ID, { UniqueId } from "utils/GenerateUniqueId";
+
 import GraphNode, { NotFoundError } from "./Node";
 
 type NodeWithMeta<T> = { _id: UniqueId } & T;
