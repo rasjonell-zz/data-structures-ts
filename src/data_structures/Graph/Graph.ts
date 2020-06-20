@@ -8,7 +8,6 @@ import GraphNode, { NotFoundError } from "./Node";
 type NodeWithMeta<T> = { _id: UniqueId } & T;
 type VertexNode<T> = GraphNode<NodeWithMeta<T>>;
 type NodeMap<T> = Map<UniqueId, VertexNode<T>>;
-type TraversallCallback<T> = (currentNode: VertexNode<T>) => any;
 
 const EdgeExistsError = new Error(
   "Edge with given source and destination already exists"
@@ -89,10 +88,7 @@ class Graph<T extends object> {
     }
   }
 
-  traversalBreadthFirst(
-    startNode: VertexNode<T>,
-    callback: TraversallCallback<T>
-  ): void {
+  *traversalBreadthFirst(startNode: VertexNode<T>) {
     const visitedSet = new Set<UniqueId>();
     const visitsQueue = new Queue<VertexNode<T>>();
 
@@ -102,19 +98,18 @@ class Graph<T extends object> {
       const node: VertexNode<T> = visitsQueue.dequeue();
 
       if (!visitedSet.has(node.id)) {
-        callback(node);
+        yield node;
+
         visitedSet.add(node.id);
-        node.adjacents.forEach((currentNode: VertexNode<T>): void => {
+
+        for (const currentNode of node.adjacents) {
           visitsQueue.enqueue(currentNode);
-        });
+        }
       }
     }
   }
 
-  traversalDepthFirst(
-    startNode: VertexNode<T>,
-    callback: TraversallCallback<T>
-  ): void {
+  *traversalDepthFirst(startNode: VertexNode<T>): Generator<VertexNode<T>> {
     const visitedSet = new Set<UniqueId>();
     const visitsStack = new Stack<VertexNode<T>>();
 
@@ -124,11 +119,13 @@ class Graph<T extends object> {
       const node: VertexNode<T> = visitsStack.pop();
 
       if (!visitedSet.has(node.id)) {
-        callback(node);
+        yield node;
+
         visitedSet.add(node.id);
-        node.adjacents.forEach((currentNode: VertexNode<T>): void => {
+
+        for (const currentNode of node.adjacents) {
           if (!visitedSet.has(currentNode.id)) visitsStack.push(currentNode);
-        });
+        }
       }
     }
   }
